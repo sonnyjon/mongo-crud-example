@@ -1,6 +1,7 @@
 package dev.sonnyjon.mongocrudexample;
 
 import dev.sonnyjon.mongocrudexample.model.GroceryItem;
+import dev.sonnyjon.mongocrudexample.repository.CustomItemRepository;
 import dev.sonnyjon.mongocrudexample.repository.ItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class MongoCrudExampleApplication implements CommandLineRunner
 {
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    CustomItemRepository customItemRepository;
 
     public static void main(String[] args)
     {
@@ -42,8 +46,8 @@ public class MongoCrudExampleApplication implements CommandLineRunner
         log.info("-----------UPDATE CATEGORY NAME OF SNACKS CATEGORY----------------");
         updateCategoryName("snacks", "munchies");
 
-        log.info("----------------SHOW ALL GROCERY ITEMS---------------------------");
-        showAllGroceryItems();
+        log.info("---------------UPDATE QUANTITY OF A GROCERY ITEM-----------------");
+        updateItemQuantity("Bonny Cheese Crackers Plain", 10);
 
         log.info("----------DELETE A GROCERY ITEM----------------------------------");
         deleteGroceryItem("Kodo Millet");
@@ -115,6 +119,12 @@ public class MongoCrudExampleApplication implements CommandLineRunner
         List<GroceryItem> itemsUpdated = itemRepository.saveAll(list);
 
         if (itemsUpdated != null) log.info("Successfully updated " + itemsUpdated.size() + " items.");
+    }
+
+    public void updateItemQuantity(String name, float newQuantity)
+    {
+        log.info("Updating quantity for " + name);
+        customItemRepository.updateItemQuantity(name, newQuantity);
     }
 
     // DELETE
